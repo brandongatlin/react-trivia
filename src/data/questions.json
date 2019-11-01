@@ -5,7 +5,7 @@
     },
 
     {
-        "q": "third letter of greek alphabet?",
+        "q": "second letter of greek alphabet?",
         "a": ["alpha", "beta", "charlie", "gamma"],
         "correct": "beta"
     },

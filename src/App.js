@@ -18,11 +18,22 @@ function App() {
 
   const handleAnswerClick = (e)=> {
     const guess = e.currentTarget.textContent;
-    if(guess === questions[currentQ].correct){
+    const answer = questions[currentQ].correct;
 
+    if(guess === answer){
+      console.log('correct', guess, answer);
     } else {
-      
+      console.log('wrong', guess, answer);
     }
+
+    if(currentQ < questions.length - 1){
+      const nextQ = currentQ + 1;
+      setCurrentQ(nextQ);
+      console.log(currentQ)
+    } else {
+      setGameDone(true);
+    }
+    
 
   }
 
