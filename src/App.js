@@ -15,12 +15,15 @@ function App() {
   const [gameOn, setGameOn] = useState(false);
   const [gameDone, setGameDone] = useState(false);
   const [currentQ, setCurrentQ] = useState(0);
+  const [score, setScore] = useState(0);
 
   const handleAnswerClick = (e)=> {
     const guess = e.currentTarget.textContent;
     const answer = questions[currentQ].correct;
 
     if(guess === answer){
+      const newScore = score + 1;
+      setScore(newScore);
       console.log('correct', guess, answer);
     } else {
       console.log('wrong', guess, answer);
@@ -29,12 +32,11 @@ function App() {
     if(currentQ < questions.length - 1){
       const nextQ = currentQ + 1;
       setCurrentQ(nextQ);
-      console.log(currentQ)
     } else {
       setGameDone(true);
+      setGameOn(false);
+      setCurrentQ(0);
     }
-    
-
   }
 
 
@@ -42,13 +44,13 @@ function App() {
     <Container fluid className="App">
       {
         gameDone ?
-        <ScoreCard />
+        <ScoreCard score={score}/>
         :
         <Timer />
       }
       
       {
-      gameOn ? 
+      gameOn && !gameDone? 
       <>
         <QuestionDiv 
           question={questions[currentQ].q}/> 
@@ -62,7 +64,12 @@ function App() {
       </>
       : 
       <Start 
-        handleClick={(e)=> setGameOn(true)}
+        handleClick={(e)=> {
+          setGameOn(true);
+          setGameDone(false);
+          setScore(0);
+        }
+      }
       />
      }
     </Container>
