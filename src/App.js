@@ -14,6 +14,7 @@ import questions from './data/questions.json';
 function App() {
   const [gameOn, setGameOn] = useState(false);
   const [gameDone, setGameDone] = useState(false);
+  // const [timeUp, setTimeUp] = useState(false);
   const [currentQ, setCurrentQ] = useState(0);
   const [score, setScore] = useState(0);
 
@@ -24,9 +25,6 @@ function App() {
     if(guess === answer){
       const newScore = score + 1;
       setScore(newScore);
-      console.log('correct', guess, answer);
-    } else {
-      console.log('wrong', guess, answer);
     }
 
     if(currentQ < questions.length - 1){
