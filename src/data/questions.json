@@ -1,0 +1,18 @@
+[{
+        "q": "first letter of greek alphabet?",
+        "a": ["alpha", "beta", "charlie", "gamma"],
+        "correct": "alpha"
+    },
+
+    {
+        "q": "third letter of greek alphabet?",
+        "a": ["alpha", "beta", "charlie", "gamma"],
+        "correct": "beta"
+    },
+
+    {
+        "q": "third letter of greek alphabet?",
+        "a": ["alpha", "beta", "charlie", "gamma"],
+        "correct": "gamma"
+    }
+]
