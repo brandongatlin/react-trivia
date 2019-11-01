@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import './App.css';
 
 import QuestionDiv from './components/QuestionDiv';
@@ -18,7 +18,24 @@ function App() {
   const [currentQ, setCurrentQ] = useState(0);
   const [score, setScore] = useState(0);
 
+  const [remaining, setRemaining] = useState(10);
+
+  const clockTick = () => {
+    const newRemaining = remaining - 1;
+    setRemaining(newRemaining);
+}
+
+  useEffect(()=> {
+    const interval = window.setInterval(clockTick, 1000);
+    return () => window.clearInterval(interval);
+  });
+
+  
+  
+
   const handleAnswerClick = (e)=> {
+    setRemaining(10);
+
     const guess = e.currentTarget.textContent;
     const answer = questions[currentQ].correct;
 
@@ -44,7 +61,7 @@ function App() {
         gameDone ?
         <ScoreCard score={score}/>
         :
-        <Timer />
+        <Timer time={remaining}/>
       }
       
       {
@@ -66,6 +83,7 @@ function App() {
           setGameOn(true);
           setGameDone(false);
           setScore(0);
+          setRemaining(10);
         }
       }
       />
