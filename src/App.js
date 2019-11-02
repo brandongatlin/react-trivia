@@ -10,31 +10,61 @@ import { Container, ListGroup, ListGroupItem } from 'reactstrap';
 import questions from './data/questions.json';
 
 
-
 function App() {
   const [gameOn, setGameOn] = useState(false);
   const [gameDone, setGameDone] = useState(false);
-  // const [timeUp, setTimeUp] = useState(false);
   const [currentQ, setCurrentQ] = useState(0);
   const [score, setScore] = useState(0);
-
   const [remaining, setRemaining] = useState(10);
+  const [outOfTime, setOutOfTime] = useState(false);
+
+  const maxTime = 10;
+
 
   const clockTick = () => {
-    const newRemaining = remaining - 1;
-    setRemaining(newRemaining);
-}
 
-  useEffect(()=> {
-    const interval = window.setInterval(clockTick, 1000);
-    return () => window.clearInterval(interval);
+    if (gameOn && !outOfTime) {
+      const newRemaining = remaining - 1;
+
+      if (remaining === 1) {
+        setOutOfTime(true);
+        setRemaining(maxTime);
+        
+        if (currentQ < questions.length - 1) {
+          const nextQ = currentQ + 1;
+          setCurrentQ(nextQ);
+          setGameOn(true);
+          setOutOfTime(false);
+
+        } else {
+          setGameDone(true);
+          setCurrentQ(0);
+        }
+
+      } else {
+        setRemaining(newRemaining);
+      }
+    } else {
+      setRemaining(maxTime);
+      setOutOfTime(false);
+    }
+
+  }
+
+  useEffect(() => {
+    if(gameOn && !outOfTime){
+      const interval = window.setInterval(clockTick, 1000);
+      return () => window.clearInterval(interval);
+    }
+    
   });
 
-  
-  
+
+
 
   const handleAnswerClick = (e)=> {
-    setRemaining(10);
+    setGameOn(false);
+    setRemaining(maxTime);
 
     const guess = e.currentTarget.textContent;
     const answer = questions[currentQ].correct;
@@ -47,9 +77,10 @@ function App() {
     if(currentQ < questions.length - 1){
       const nextQ = currentQ + 1;
       setCurrentQ(nextQ);
+      setGameOn(true);
+
     } else {
       setGameDone(true);
-      setGameOn(false);
       setCurrentQ(0);
     }
   }
@@ -61,7 +92,7 @@ function App() {
         gameDone ?
         <ScoreCard score={score}/>
         :
-        <Timer time={remaining}/>
+        <Timer time={remaining} running={gameOn}/>
       }
       
       {
@@ -82,8 +113,9 @@ function App() {
         handleClick={(e)=> {
           setGameOn(true);
           setGameDone(false);
+          setOutOfTime(false);
           setScore(0);
-          setRemaining(10);
+          setRemaining(maxTime);
         }
       }
       />
